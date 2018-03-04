@@ -1,3 +1,5 @@
+const path = require('path')
+const cors = require('cors')
 const express = require('express')
 const app = express()
 
@@ -20,6 +22,7 @@ app.set('port',process.env.PORT || 3000)
 //middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(cors())
 
 //routes
 app.use('/api/users',userRoutes)
@@ -27,7 +30,7 @@ app.use('/api/areas',areaRoutes)
 app.use('/api/orders',orderRoutes)
 
 //static files
-
+app.use(express.static(path.join(__dirname,'public')))
 
 //handle errors
 
