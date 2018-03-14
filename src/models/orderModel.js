@@ -6,23 +6,11 @@ const orderSchema = new Schema({
     type:Number,
     required:true
   },
-  description:{
-    type:String,
-    required:true 
-  },
-  quantity:{
-    type:Number,
-    required:true
-  },
-  units:{
-    type:String,
-    required:true
-  },
   type:{
     type:String,
     required:true
   },
-  codppto:{
+  codpoi:{
     type:String,
     required:true
   },
@@ -30,25 +18,20 @@ const orderSchema = new Schema({
     type:String,
     required:true
   },
-  date:{
+  orderDate:{
     type:Date,
     default:Date.now()
   },
-  tracing:{
-    type:String
-  },
-  estimatedCost:{
-    type:Number,
-    required:true
-  },
-  realCost:{
-    type:Number,
-    required:true
-  },
+  servedDate:Date,
+  serviceDate:Date,
   area:{
     type:Schema.Types.ObjectId,
     ref:'area'
-  }
+  },
+  details:[{
+    type:Schema.Types.ObjectId,
+    ref:'orderDetail'
+  }]
 })
 
 module.exports = mongoose.model('order',orderSchema)

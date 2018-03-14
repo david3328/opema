@@ -1,22 +1,32 @@
 const Order = require('../models/orderModel')
+const orderDetail  = require('../models/orderDetailModel')
 
 module.exports = {
   index: async(req,res,next)=>{
     try{
-      const orders = await Order.find({})
+      const orders = await Order.find({}).populate('area').populate('details')
       res.status(200).json(orders)
     }catch(e){
       res.status(400).json(e)
     }
   },
-  updateOrder: async(req,res,next)=>{
+  newOrder: async(req,res,next)=>{
     try{
-      const {id} = req.params
-      const newOrder = req.body
-      const oldOrder = await Order.findByIdAndUpdate(id,newOrder)
-      res.status(200).json({success:true})
+      const newOrder = new Order(req.body);
+      details = req.body.details
+      newOrder.details = []
+      const order = await newOrder.save()
+      details.forEach(async(detail)=>{
+        const newDetail = new orderDetail(detail)
+        newDetail.order = order 
+        const test = await newDetail.save()
+        order.details.push(newDetail)
+        await order.save()
+      })
+      res.status(200).json({success:true,message:'Añadido correctamente'})
     }catch(e){
-      res.status(400).json(e)
+      console.log(e)
+      res.status(400).json({success:false,message:'Ocurrio un error',error:e})
     }
   }
 }

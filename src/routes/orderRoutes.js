@@ -2,11 +2,11 @@ const {isAuth} = require('../services/auth')
 const router = require('express').Router()
 const {
   index,
-  updateOrder
+  newOrder
 } = require('../controllers/orderController')
 
 router.use(isAuth)
 router.get('/',index)
-router.put('/:id',updateOrder)
+router.post('/',newOrder)
 
 module.exports = router
